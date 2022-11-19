@@ -268,18 +268,122 @@ with open('hey.json', encoding='utf8') as f:
 
 ## Errors and Exceptions
 
+There are two distingusihable kinds of errors: syntax errors and exceptions.
+
 ### Syntax Errors
+
+These are also known as parsing errors. Ocurrs when we don't follow proper python syntax.
+
+```python
+while True print("Hello World")
+```
 
 ### Exceptions
 
+Even if a statement or expression is syntactically correct, it may cause an error whe an attempt is made to execute it.
+
+```python
+10 * (1/0)
+```
+
+```python
+4 + spam * 3
+```
+
+```python
+'2' + 2
+```
+
+```python
+ar = [1, 2, 3, 4]
+ar[5]
+```
+
+```python
+d = {"hello": "hola", "milk": "leche"}
+d["thanks"]
+```
+
 ### Handling Exceptions
+
+It is possible to write programs that handle selected exceptions. We use the try, except and finally block to handle exceptions.
+
+```python
+while True:
+    try:
+        x = int(input("Please enter a number: "))
+        break
+    except ValueError:
+        print("Oops!! That was not a valid number. Try again")
+```
+
+The flow is as follows:
+
+* First the `try` clause is executed
+* If no exception occur then the except clause is skipped after the execution of `try` caluse.
+* If an exception occurs which does not match the exception named in the except clause, it is first passed to the next except block and if absent, then it is passed on to outer try statements. If no handler is found, it is an unhandled exception and the execution stops.
+
+A `try` statement can have more than one except clause to specify how to handle different exceptions differently. Handlers only handle exceptions that occur in the corresponding try clause and not in other handlers of same try statement.
+An except clause may also name multiple exceptions as paranthesized tuple.
+
+```python
+try:
+    a = x[15] / 0
+except (ZeroDivisionError, IndexError):
+    print("A yo error occurred!!")
+```
 
 ### Raising Exceptions
 
-### Exception Chaining
+The `raise` statement allows the programmer to force a specified exception to occur.
+
+```python
+raise NameError('HiThere')
+```
+
+The argument to raise should be an instance of exception or a class derived from Exception or one its subclasses.
 
 ### User Defined Exceptions
 
+Programs may name their own exception by creating a new exception class derived from the `Exception` class; directly or indirectly.
+
 ### Defining Clean-up Actions
 
-### Predefined Clean-up Actions
+The `try` statement has another optional clause which is intended to define clean up actions that must be executed under all circumstances.
+
+```python
+try:
+    raise KeyboardInterrupt
+except Exception:
+    print("Error!")
+finally:
+    print("Goodbye world")
+```
+
+The `finally` clause if present will execute as the last task before the try statments completes. The finally clause runs whether or not the try statement produces an exception.
+
+```python
+def bool_return():
+    try:
+        return True
+    finally:
+        return False
+
+bool_return()
+```
+
+If the `try` statement reaches a `break`, `continue` or `return` statement, the finally clause will execute just prior to it's execution.
+
+If a `finally` clause includes a `return` statement, the returned value will be the one from the finally clause's `return` statement and not the value from `try` clause's `return` statement.
+
+```python
+def divide(x, y):
+    try:
+        result = x / y
+    except ZeroDivisionError:
+        print("division by zero!")
+    else:
+        print("result is", result)
+    finally:
+        print("executing finally clause")
+```
